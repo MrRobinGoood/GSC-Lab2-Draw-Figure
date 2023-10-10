@@ -22,7 +22,7 @@ namespace GSC_Lab1
         //1 - без отрисовки граничного многоугольника
         short outputType = 0;
 
-        List<Point> VertexList = new List<Point>();        
+        List<Point> VertexList = new List<Point>();
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace GSC_Lab1
         {
             double square_triangle = 0.5 * (A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y));
 
-            if (square_triangle < 0) { return true; } 
+            if (square_triangle < 0) { return true; }
             else { return false; }
         }
 
@@ -78,13 +78,14 @@ namespace GSC_Lab1
             Ymin = Math.Max(Ymin, 0);
             Ymax = Math.Min(Ymax, 480);
 
-           
 
 
-            
+
+
 
             //отрисовка как для неориентированного многоугольника
-            if (paintType== 0) {
+            if (paintType == 0)
+            {
 
                 List<int> xPoints = new List<int>();
 
@@ -123,7 +124,7 @@ namespace GSC_Lab1
                                 float A = (Yi - Yk) / (Xi - Xk);
                                 float C = Yk - A * Xk;
                                 x = (int)((y - C) / A);
-                                
+
                             }
                             else
                             {
@@ -170,72 +171,87 @@ namespace GSC_Lab1
                 if (jYmax < VertexList.Count - 1) { C = VertexList[jYmax + 1]; } else { C = VertexList[0]; }
                 B = VertexList[jYmax];
                 bool CW = detectCW(A, B, C);
-                /*
-                if (CW) { }
 
-                for (int vertNum = 0; vertNum < VertexList.Count; vertNum++)
+                if (CW)
                 {
+                    for (int i = 0; i < Ymin; i++;){
+                        Point firPoint = new Point(0, i);
+                        Point secPoint = new Point(1100, i);
+                        g.DrawLine(DrPen, firPoint, secPoint);
+                    }
+                }
 
+                List<int> Xl = new List<int>();
+                List<int> Xr = new List<int>();
+
+                for (int y = Ymin; y <= Ymax; y++)
+                {
+                    Xl.Clear();
+                    Xr.Clear();
                     for (int i = 1; i < VertexList.Count; i++;){
-                        
-
+                    if ()
+                    {
 
                     }
-                }
 
 
-                */
 
-                    //MessageBox.Show(CW.ToString());
-                }
-        }
-        // Обработчик события
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            VertexList.Add(new Point() { X = e.X, Y = e.Y });
-
-            g.DrawEllipse(DrawPen, e.X - 2, e.Y - 2, 5, 5);
-           // g.DrawString("V(" + VertexList.Count + ")",new Font("Arial", 14), Brushes.Black, VertexList[VertexList.Count-1]);
-
-            if ((e.Button == MouseButtons.Right))// Конец ввода
-            {
-                if(VertexList.Count >= 3)
-                {
-                    if (outputType == 0)
-                    {
-                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[0]);
-                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
-                        PaintFigure(DrawPen);
-                    }
-                    PaintFigure(DrawPen);
-                    VertexList.Clear();
-                }
-                else if(VertexList.Count == 2)
-                {
-                    if (outputType == 0)
-                    {
-                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
-                    }  
-                    MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 2 точки, необходимо не менее 3.");
-                }
-                else { MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 1 точку, необходимо не менее 3."); }
-            }
-            else
-            {
-                if(outputType == 0)
-                {
-                    if(VertexList.Count > 1)
-                    {
-                        g.DrawLine(DrawPen, VertexList[VertexList.Count-1], VertexList[VertexList.Count-2]);
-                    }
                 }
             }
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            g.Clear(Color.White);
-            VertexList.Clear();
+
+
+
+            //MessageBox.Show(CW.ToString());
         }
     }
+    // Обработчик события
+    private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+    {
+        VertexList.Add(new Point() { X = e.X, Y = e.Y });
+
+        g.DrawEllipse(DrawPen, e.X - 2, e.Y - 2, 5, 5);
+        // g.DrawString("V(" + VertexList.Count + ")",new Font("Arial", 14), Brushes.Black, VertexList[VertexList.Count-1]);
+
+        if ((e.Button == MouseButtons.Right))// Конец ввода
+        {
+            if (VertexList.Count >= 3)
+            {
+                if (outputType == 0)
+                {
+                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[0]);
+                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                    PaintFigure(DrawPen);
+                }
+                PaintFigure(DrawPen);
+                VertexList.Clear();
+            }
+            else if (VertexList.Count == 2)
+            {
+                if (outputType == 0)
+                {
+                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                }
+                MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 2 точки, необходимо не менее 3.");
+            }
+            else { MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 1 точку, необходимо не менее 3."); }
+        }
+        else
+        {
+            if (outputType == 0)
+            {
+                if (VertexList.Count > 1)
+                {
+                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                }
+            }
+        }
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        g.Clear(Color.White);
+        VertexList.Clear();
+    }
+}
 }

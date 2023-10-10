@@ -91,7 +91,7 @@ namespace GSC_Lab1
             int Ymax = VertexList.Max(point => point.Y);
 
             Ymin = Math.Max(Ymin, 0);
-            Ymax = Math.Min(Ymax, 480);
+            Ymax = Math.Min(Ymax, PICTURE_BOX_HEIGHT);
 
 
 
@@ -195,7 +195,7 @@ namespace GSC_Lab1
                     for (int i = 0; i < Ymin; i++)
                     {
                         Point firPoint = new Point(0, i);
-                        Point secPoint = new Point(1100, i);
+                        Point secPoint = new Point(PICTURE_BOX_WIDTH, i);
                         g.DrawLine(DrPen, firPoint, secPoint);
                     }
                 }
@@ -254,7 +254,7 @@ namespace GSC_Lab1
                     if (CW)
                     {
                         Xl.Add(0);
-                        Xr.Add(1100);
+                        Xr.Add(PICTURE_BOX_WIDTH);
                     }
 
                     Xl.Sort();
@@ -275,10 +275,10 @@ namespace GSC_Lab1
 
                 if (CW)
                 {
-                    for (int i = Ymax; i < 480; i++)
+                    for (int i = Ymax; i < PICTURE_BOX_HEIGHT; i++)
                     {
                         Point firPoint = new Point(0, i);
-                        Point secPoint = new Point(1100, i);
+                        Point secPoint = new Point(PICTURE_BOX_WIDTH, i);
                         g.DrawLine(DrPen, firPoint, secPoint);
                     }
                 }

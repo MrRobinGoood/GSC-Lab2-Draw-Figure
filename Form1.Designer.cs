@@ -5,7 +5,8 @@ namespace GSC_Lab1
 {
     public partial class Form1 : Form
     {
-        
+        const int PICTURE_BOX_WIDTH = 1100;
+        const int PICTURE_BOX_HEIGHT = 480;        
 
         private System.ComponentModel.IContainer components = null;
 
@@ -37,7 +38,7 @@ namespace GSC_Lab1
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Location = new System.Drawing.Point(68, 25);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1100, 480);
+            this.pictureBox1.Size = new System.Drawing.Size(PICTURE_BOX_WIDTH, PICTURE_BOX_HEIGHT);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);

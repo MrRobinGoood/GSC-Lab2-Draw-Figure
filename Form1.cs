@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
+using System.Xml.Schema;
 
 namespace GSC_Lab1
 {
@@ -33,9 +33,9 @@ namespace GSC_Lab1
         static bool detectCW(Point A, Point B, Point C)
         {
             double square_triangle = 0.5 * (A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y));
-
-            if (square_triangle < 0) { return true; }
-            else { return false; }
+            MessageBox.Show(square_triangle.ToString());
+            if (square_triangle < 0) { return false; }
+            else { return true; }
         }
 
         private void comboBox1_SelectType(object sender, EventArgs e)
@@ -116,6 +116,7 @@ namespace GSC_Lab1
                         float Xi = VertexList[vertNum].X;
                         float Yk = VertexList[nextVert].Y;
                         float Xk = VertexList[nextVert].X;
+
                         int x;
                         if (((Yi < y) && (Yk >= y)) || ((Yi >= y) && (Yk < y)))
                         {
@@ -166,15 +167,16 @@ namespace GSC_Lab1
                 {
                     if (VertexList[g].Y == Ymax) { jYmax = g; break; }
                 }
-                Point A, B, C;
-                if (jYmax > 0) { A = VertexList[jYmax - 1]; } else { A = VertexList[VertexList.Count - 1]; }
-                if (jYmax < VertexList.Count - 1) { C = VertexList[jYmax + 1]; } else { C = VertexList[0]; }
-                B = VertexList[jYmax];
-                bool CW = detectCW(A, B, C);
+                Point X, Y, Z;
+                if (jYmax > 0) { X = VertexList[jYmax - 1]; } else { X = VertexList[VertexList.Count - 1]; }
+                if (jYmax < VertexList.Count - 1) {Z = VertexList[jYmax + 1]; } else { Z = VertexList[0]; }
+                Y = VertexList[jYmax];
+                bool CW = detectCW(X, Y, Z);
 
                 if (CW)
                 {
-                    for (int i = 0; i < Ymin; i++){
+                    for (int i = 0; i < Ymin; i++)
+                    {
                         Point firPoint = new Point(0, i);
                         Point secPoint = new Point(1100, i);
                         g.DrawLine(DrPen, firPoint, secPoint);
@@ -184,38 +186,101 @@ namespace GSC_Lab1
                 List<int> Xl = new List<int>();
                 List<int> Xr = new List<int>();
 
+
+
                 for (int y = Ymin; y <= Ymax; y++)
                 {
                     Xl.Clear();
                     Xr.Clear();
-                    int k;
-                    
-                    for ( int i = 1; i < VertexList.Count; i++)
+                    int nextVert = 0;
+
+                    for (int vertNum = 0; vertNum < VertexList.Count; vertNum++)
                     {
-                        if (i < VertexList.Count)
+                        //определение индекса вершины смежной текущей
+                        if (vertNum == VertexList.Count - 1)
                         {
-                            k = i + 1;
+                            nextVert = 0;
                         }
-                        else { k = 1; }
+                        else
+                        {
+                            nextVert = vertNum + 1;
+                        }
+                        //координаты двух смежных отрезков
+                        float Yi = VertexList[vertNum].Y;
+                        float Xi = VertexList[vertNum].X;
+                        float Yk = VertexList[nextVert].Y;
+                        float Xk = VertexList[nextVert].X;
+
+                        int x;
+                        if (((Yi < y) && (Yk >= y)) || ((Yi >= y) && (Yk < y)))
+                        {
+                            
+                            if (Xi - Xk != 0)
+                            {
+                                float A = (Yi - Yk) / (Xi - Xk);
+                                float C = Yk - A * Xk;
+                                x = (int)((y - C) / A);
+
+                            }
+                            else
+                            {
+                                x = (int)Xi;
+                            }
+
+                            if (VertexList[nextVert].Y - VertexList[vertNum].Y > 0) { Xl.Add(x); }
+                            else { Xr.Add(x); }
+
+                        }
+                    }
+
+
+                    if (CW)
+                    {
+                        Xl.Add(0);
+                        Xr.Add(1100);
+                    }
+
+                    Xl.Sort();
+                    Xr.Sort();
+
+                    for (int Xi = 0; Xi < Xl.Count; Xi++)
+                    {
+                        if (Xl[Xi] > Xr[Xi]) { }
+                        else
+                        {
+                            Point firPoint = new Point(Xl[Xi], y);
+                            Point secPoint = new Point(Xr[Xi], y);
+                            g.DrawLine(DrPen,firPoint,secPoint);
+                        }
                     }
 
                 }
 
-                    
-
-             }
-                    
-                       
-
-                        
-
-
-                
-         }
+                if (CW)
+                {
+                    for (int i = Ymax; i < 480; i++)
+                    {
+                        Point firPoint = new Point(0, i);
+                        Point secPoint = new Point(1100, i);
+                        g.DrawLine(DrPen, firPoint, secPoint);
+                    }
+                }
 
 
 
-            
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
 
         // Обработчик события
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)

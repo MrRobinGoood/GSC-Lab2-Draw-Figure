@@ -84,8 +84,8 @@ namespace GSC_Lab1
             // 
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.Items.AddRange(new object[] {
-            "С отрисвкой многоугольника",
-            "Без отрисовки мнгоугольника"});
+            "С отрисовкой многоугольника",
+            "Без отрисовки многоугольника"});
             this.comboBox3.Location = new System.Drawing.Point(628, 552);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(400, 28);

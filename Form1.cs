@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Schema;
 
+using System.Drawing.Drawing2D;
+
 namespace GSC_Lab1
 {
     public partial class Form1 : Form
@@ -13,12 +15,12 @@ namespace GSC_Lab1
         Pen DrawPen = new Pen(Color.Black, 1);
 
         // Код типа закрашивания, где
-        // 0 - как неоринетированного
+        // 0 - как неориентированного
         // 1 - как ориентированного
         short paintType = 0;
 
         //Код типа вывода
-        //0 - с отрисвкой граничного мноугольника
+        //0 - с отрисовкой граничного мноугольника
         //1 - без отрисовки граничного многоугольника
         short outputType = 0;
 
@@ -33,7 +35,6 @@ namespace GSC_Lab1
         static bool detectCW(Point A, Point B, Point C)
         {
             double square_triangle = 0.5 * (A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y));
-            MessageBox.Show(square_triangle.ToString());
             if (square_triangle < 0) { return false; }
             else { return true; }
         }
@@ -41,6 +42,14 @@ namespace GSC_Lab1
         private void comboBox1_SelectType(object sender, EventArgs e)
         {
             paintType = (short)comboBox1.SelectedIndex;
+            if (paintType == 0)
+            {
+                DrawPen.CustomStartCap = new AdjustableArrowCap(0, 0);
+            }
+            else
+            {
+                DrawPen.CustomStartCap = new AdjustableArrowCap(3, 4);
+            }
         }
 
         private void comboBox2_SelectColor(object sender, EventArgs e)
@@ -65,8 +74,14 @@ namespace GSC_Lab1
         private void comboBox3_SelectOutType(object sender, EventArgs e)
         {
             outputType = (short)comboBox3.SelectedIndex;
-            g.Clear(Color.White);
-            VertexList.Clear();
+            if (outputType == 1)
+            {
+                DrawPen.CustomStartCap = new AdjustableArrowCap(0, 0);
+            }
+            else
+            {
+                DrawPen.CustomStartCap = new AdjustableArrowCap(3, 4);
+            }
         }
 
         public void PaintFigure(Pen DrPen)
@@ -162,6 +177,8 @@ namespace GSC_Lab1
             //отрисовка как для ориентированного многоугольника
             else
             {
+
+
                 int jYmax = 0;
                 for (int g = 0; g < VertexList.Count; g++)
                 {
@@ -289,7 +306,10 @@ namespace GSC_Lab1
 
             g.DrawEllipse(DrawPen, e.X - 2, e.Y - 2, 5, 5);
             // g.DrawString("V(" + VertexList.Count + ")",new Font("Arial", 14), Brushes.Black, VertexList[VertexList.Count-1]);
+            
 
+
+            
             if ((e.Button == MouseButtons.Right))// Конец ввода
             {
                 if (VertexList.Count >= 3)

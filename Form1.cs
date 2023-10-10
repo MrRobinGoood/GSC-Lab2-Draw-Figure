@@ -174,7 +174,7 @@ namespace GSC_Lab1
 
                 if (CW)
                 {
-                    for (int i = 0; i < Ymin; i++;){
+                    for (int i = 0; i < Ymin; i++){
                         Point firPoint = new Point(0, i);
                         Point secPoint = new Point(1100, i);
                         g.DrawLine(DrPen, firPoint, secPoint);
@@ -188,70 +188,82 @@ namespace GSC_Lab1
                 {
                     Xl.Clear();
                     Xr.Clear();
-                    for (int i = 1; i < VertexList.Count; i++;){
-                    if ()
+                    int k;
+                    
+                    for ( int i = 1; i < VertexList.Count; i++)
                     {
-
+                        if (i < VertexList.Count)
+                        {
+                            k = i + 1;
+                        }
+                        else { k = 1; }
                     }
 
-
-
                 }
-            }
+
+                    
+
+             }
+                    
+                       
+
+                        
+
+
+                
+         }
 
 
 
+            
 
-            //MessageBox.Show(CW.ToString());
-        }
-    }
-    // Обработчик события
-    private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-    {
-        VertexList.Add(new Point() { X = e.X, Y = e.Y });
-
-        g.DrawEllipse(DrawPen, e.X - 2, e.Y - 2, 5, 5);
-        // g.DrawString("V(" + VertexList.Count + ")",new Font("Arial", 14), Brushes.Black, VertexList[VertexList.Count-1]);
-
-        if ((e.Button == MouseButtons.Right))// Конец ввода
+        // Обработчик события
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (VertexList.Count >= 3)
+            VertexList.Add(new Point() { X = e.X, Y = e.Y });
+
+            g.DrawEllipse(DrawPen, e.X - 2, e.Y - 2, 5, 5);
+            // g.DrawString("V(" + VertexList.Count + ")",new Font("Arial", 14), Brushes.Black, VertexList[VertexList.Count-1]);
+
+            if ((e.Button == MouseButtons.Right))// Конец ввода
             {
-                if (outputType == 0)
+                if (VertexList.Count >= 3)
                 {
-                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[0]);
-                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                    if (outputType == 0)
+                    {
+                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[0]);
+                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                        PaintFigure(DrawPen);
+                    }
                     PaintFigure(DrawPen);
+                    VertexList.Clear();
                 }
-                PaintFigure(DrawPen);
-                VertexList.Clear();
+                else if (VertexList.Count == 2)
+                {
+                    if (outputType == 0)
+                    {
+                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                    }
+                    MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 2 точки, необходимо не менее 3.");
+                }
+                else { MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 1 точку, необходимо не менее 3."); }
             }
-            else if (VertexList.Count == 2)
+            else
             {
                 if (outputType == 0)
                 {
-                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
-                }
-                MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 2 точки, необходимо не менее 3.");
-            }
-            else { MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 1 точку, необходимо не менее 3."); }
-        }
-        else
-        {
-            if (outputType == 0)
-            {
-                if (VertexList.Count > 1)
-                {
-                    g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                    if (VertexList.Count > 1)
+                    {
+                        g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
+                    }
                 }
             }
         }
-    }
 
-    private void button1_Click(object sender, EventArgs e)
-    {
-        g.Clear(Color.White);
-        VertexList.Clear();
+        private void button1_Click(object sender, EventArgs e)
+        {
+            g.Clear(Color.White);
+            VertexList.Clear();
+        }
     }
-}
 }

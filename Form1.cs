@@ -30,6 +30,14 @@ namespace GSC_Lab1
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         }
 
+        static bool detectCW(Point A, Point B, Point C)
+        {
+            double square_triangle = 0.5 * (A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y));
+
+            if (square_triangle < 0) { return true; } 
+            else { return false; }
+        }
+
         private void comboBox1_SelectType(object sender, EventArgs e)
         {
             paintType = (short)comboBox1.SelectedIndex;
@@ -63,13 +71,20 @@ namespace GSC_Lab1
 
         public void PaintFigure(Pen DrPen)
         {
-            //отрисовка как для неориентированного многоугольника
-            if(paintType== 0) {
-                int Ymin = VertexList.Min(point => point.Y);
-                int Ymax = VertexList.Max(point => point.Y);
 
-                Ymin = Math.Max(Ymin, 0);
-                Ymax = Math.Min(Ymax, 480);
+            int Ymin = VertexList.Min(point => point.Y);
+            int Ymax = VertexList.Max(point => point.Y);
+
+            Ymin = Math.Max(Ymin, 0);
+            Ymax = Math.Min(Ymax, 480);
+
+           
+
+
+            
+
+            //отрисовка как для неориентированного многоугольника
+            if (paintType== 0) {
 
                 List<int> xPoints = new List<int>();
 
@@ -145,8 +160,34 @@ namespace GSC_Lab1
             //отрисовка как для ориентированного многоугольника
             else
             {
+                int jYmax = 0;
+                for (int g = 0; g < VertexList.Count; g++)
+                {
+                    if (VertexList[g].Y == Ymax) { jYmax = g; break; }
+                }
+                Point A, B, C;
+                if (jYmax > 0) { A = VertexList[jYmax - 1]; } else { A = VertexList[VertexList.Count - 1]; }
+                if (jYmax < VertexList.Count - 1) { C = VertexList[jYmax + 1]; } else { C = VertexList[0]; }
+                B = VertexList[jYmax];
+                bool CW = detectCW(A, B, C);
+                /*
+                if (CW) { }
 
-            }
+                for (int vertNum = 0; vertNum < VertexList.Count; vertNum++)
+                {
+
+                    for (int i = 1; i < VertexList.Count; i++;){
+                        
+
+
+                    }
+                }
+
+
+                */
+
+                    //MessageBox.Show(CW.ToString());
+                }
         }
         // Обработчик события
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -158,7 +199,7 @@ namespace GSC_Lab1
 
             if ((e.Button == MouseButtons.Right))// Конец ввода
             {
-                if(VertexList.Count > 2)
+                if(VertexList.Count >= 3)
                 {
                     if (outputType == 0)
                     {
@@ -169,14 +210,15 @@ namespace GSC_Lab1
                     PaintFigure(DrawPen);
                     VertexList.Clear();
                 }
-                else
+                else if(VertexList.Count == 2)
                 {
                     if (outputType == 0)
                     {
                         g.DrawLine(DrawPen, VertexList[VertexList.Count - 1], VertexList[VertexList.Count - 2]);
                     }  
-                    MessageBox.Show("Недостаточное количество точек для многоугольника");
+                    MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 2 точки, необходимо не менее 3.");
                 }
+                else { MessageBox.Show("Недостаточное количество точек для многоугольника. Вы поставили только 1 точку, необходимо не менее 3."); }
             }
             else
             {

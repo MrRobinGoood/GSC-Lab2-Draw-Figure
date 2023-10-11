@@ -78,7 +78,7 @@ namespace GSC_Lab1
             {
                 DrawPen.CustomStartCap = new AdjustableArrowCap(0, 0);
             }
-            else
+            else if (paintType == 1)
             {
                 DrawPen.CustomStartCap = new AdjustableArrowCap(3, 4);
             }
